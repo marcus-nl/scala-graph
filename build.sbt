@@ -19,6 +19,7 @@ lazy val core = project
       name := "Graph Core",
       version := Version.core,
       libraryDependencies ++= Seq(
+        "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.2",
         "org.scalacheck" %% "scalacheck"   % "1.14.0" % "optional;provided",
         "org.gephi"      % "gephi-toolkit" % "0.9.2"  % "test" classifier "all"
       ),
@@ -92,8 +93,8 @@ ThisBuild / scalafmtConfig := Some(file(".scalafmt.conf"))
 
 val unusedImports = "-Ywarn-unused:imports"
 lazy val defaultSettings = Defaults.coreDefaultSettings ++ Seq(
-  scalaVersion := Version.compiler_2_13,
-  crossScalaVersions := Seq(/*Version.compiler_2_12, */Version.compiler_2_13),
+  scalaVersion := Version.compiler_2_12,
+  crossScalaVersions := Seq(/*Version.compiler_2_12, */Version.compiler_2_12),
   organization := "org.scala-graph",
   scalacOptions ++= Seq(
     unusedImports,
