@@ -1,17 +1,16 @@
 package scalax.collection.mutable
 
 import scala.collection.Util.nextPositivePowerOfTwo
-import scala.collection.mutable.Growable
+import scala.collection.mutable.Builder
 
-// BW how?
-trait EqHash[A, This <: EqHash[A, This]] {
-  this: IterableOnce[A] with Growable[A] with Equals =>
+trait EqHash[A <: AnyRef, This <: EqHash[A, This]] {
+  this: TraversableOnce[A] with Builder[A, This] with Equals =>
 
   protected def sizeHint: Int
   protected def step: Int
 
-  protected var _size                  = 0
-  final override def knownSize         = _size
+  protected var _size             = 0
+  @inline final override def size = _size
 
   protected var (threshold: Int, table: Array[AnyRef]) = {
     val cap    = capacity(sizeHint)
@@ -22,7 +21,7 @@ trait EqHash[A, This <: EqHash[A, This]] {
   def from(other: This) {
     threshold = other.threshold
     table = other.table.clone
-    _size = other._size
+    _size = other.size
   }
 
   @inline final protected def maxCapacity      = 1 << (31 - step)
@@ -72,7 +71,7 @@ trait EqHash[A, This <: EqHash[A, This]] {
     _size = 0
   }
 
-  protected def resize() {
+  protected def resize {
     val oldTable  = table
     val oldLength = oldTable.length
     val newLength = 2 * oldLength
@@ -152,16 +151,16 @@ trait EqHash[A, This <: EqHash[A, This]] {
 
   override def hashCode: Int = {
     val tab = table
-    new KeyIndexIterator().foldLeft(0)(_ + elemHashCode(tab, _))
+    (0 /: new KeyIndexIterator)(_ + elemHashCode(tab, _))
   }
 
   def containsElem(elem: A): Boolean
 
   override def equals(other: Any): Boolean = other match {
-    case that: EqHash[A, This] with IterableOnce[A] with Equals =>
+    case that: EqHash[A, This] with TraversableOnce[A] with Equals =>
       (that canEqual this) &&
-        (that._size == this._size) &&
-        (that.iterator.forall(containsElem))
+        (that.size == this.size) &&
+        (that forall containsElem)
     case _ => false
   }
 

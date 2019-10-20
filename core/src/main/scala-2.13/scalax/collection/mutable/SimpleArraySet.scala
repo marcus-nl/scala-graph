@@ -15,7 +15,6 @@ import immutable.SortedArraySet
   * @define OPT Optimized by use of unchecked insertions.
   * @author Peter Empen
   */
-// BW split
 @SerialVersionUID(1L)
 final class SimpleArraySet[A](override val hints: ArraySet.Hints)
     extends ArraySet[A]
