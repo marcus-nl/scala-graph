@@ -493,7 +493,7 @@ object GraphEdge {
     override def withSources[U](f: N => U) = f(this._1)
     override def withTargets[U](f: N => U) = targets foreach f
 
-    override def sources = Iterable.single(from)
+    override def sources = List(from)
     override def targets = mkIterable(iterator.drop(1))
 
     override def matches[M >: N](n1: M, n2: M): Boolean =
@@ -515,8 +515,8 @@ object GraphEdge {
     final override def withTargets[U](f: N => U) = f(this._2)
     final override def withSources[U](f: N => U) = f(this._1)
 
-    override def sources = Iterable.single(this._1)
-    override def targets = Iterable.single(this._2)
+    override def sources = List(this._1)
+    override def targets = List(this._2)
 
     override def matches[M >: N](n1: M, n2: M): Boolean = diBaseEquals(n1, n2)
     override def matches(p1: N => Boolean, p2: N => Boolean): Boolean =

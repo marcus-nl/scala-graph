@@ -25,6 +25,10 @@ package object collection {
   protected[scalax] type MSet[A] = scala.collection.mutable.Set[A]
   @inline final protected[scalax] def MSet = scala.collection.mutable.Set
 
+  // 2.12 only
+  protected[scalax] type Traversable[A] = scala.collection.Iterable[A]
+  protected[scalax] type IterableOnce[A] = scala.collection.TraversableOnce[A]
+
   @inline final protected[scalax] def mkIterable[A](it: => Iterator[A]): Iterable[A] = new AbstractIterable[A] {
     override def iterator = it
   }
@@ -35,4 +39,15 @@ package object collection {
     def tap[U](f: A => U): A  = { f(self); self }
     def pipe[B](f: A => B): B = f(self)
   }
+
+  /* 2.12 */
+  implicit final class ToExts[A](val self: Iterable[A]) extends AnyVal {
+    def toMSet: MSet[A] = self.to[MSet]
+  }
+
+  /* 2.13
+  implicit final class ToExts[A](val self: Iterable[A]) extends AnyVal {
+    def toMSet: MSet[A] = self.to(MSet)
+  }
+  */
 }

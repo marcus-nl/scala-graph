@@ -54,7 +54,7 @@ trait TraverserImpl[N, E[+X] <: EdgeLikeIn[X]] {
         implicit visitor: InnerElem => U = Visitor.empty): CycleNodeOrTopologicalOrder = {
       val predecessors: MSet[NodeT] =
         if (ignorePredecessors)
-          innerNodeTraverser(root, Parameters.Dfs(Predecessors)).to(MSet) -= root
+          innerNodeTraverser(root, Parameters.Dfs(Predecessors)).toMSet -= root
         else MSet.empty
       def ignore(n: NodeT): Boolean = if (ignorePredecessors) predecessors contains n else false
       val inDegrees =
@@ -63,7 +63,7 @@ trait TraverserImpl[N, E[+X] <: EdgeLikeIn[X]] {
           includeInDegree = if (ignorePredecessors) !ignore(_) else anyNode,
           includeAnyway = if (ignorePredecessors) Some(root) else None
         )
-      val withoutPreds = inDegrees._1.iterator.filterNot(predecessors.contains).to(Buffer)
+      val withoutPreds = inDegrees._1.iterator.filterNot(predecessors.contains).toBuffer
       Runner(StopCondition.None, Visitor.empty).topologicalSort(inDegrees.copy(_1 = withoutPreds))
     }
 

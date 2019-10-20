@@ -12,6 +12,7 @@ import scala.collection.{ExtSetMethods, IterableFactory, IterableFactoryDefaults
   *
   *  @define COLL `ArraySet`
   */
+// BW split
 trait ArraySet[A]
     extends AbstractSet[A]
     with SetOps[A, ArraySet, ArraySet[A]]

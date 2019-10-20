@@ -3,6 +3,7 @@ package scalax.collection.mutable
 import scala.collection.Util.nextPositivePowerOfTwo
 import scala.collection.mutable.Growable
 
+// BW how?
 trait EqHash[A, This <: EqHash[A, This]] {
   this: IterableOnce[A] with Growable[A] with Equals =>
 

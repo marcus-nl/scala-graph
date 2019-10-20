@@ -1,13 +1,31 @@
 package scalax.collection
 
 import language.higherKinds
-import collection.{IterableOnce, SetOps}
+//import collection.{IterableOnce, SetOps}
 import scala.reflect.ClassTag
 
 import GraphPredef.{EdgeLikeIn, InnerEdgeParam, InnerNodeParam, OuterEdge, OuterNode, Param}
 import GraphEdge.{DiHyperEdgeLike, Keyed, UnDiEdge}
 import generic.{GraphCompanion, GraphCoreCompanion}
 import config.GraphConfig
+
+/* 2.12 */
+trait GraphLikeParent[N,
+                   E[+X] <: EdgeLikeIn[X],
+                   +This[NN, EE[+XX] <: EdgeLikeIn[XX]] <: GraphLikeParent[NN, EE, This] with AnySet[Param[NN, EE]] with Graph[NN, EE]]
+  extends scala.collection.SetLike[Param[N, E], This[N, E]] {
+
+}
+
+/* 2.13
+trait GraphLikeParent[N,
+                      E[+X] <: EdgeLikeIn[X],
+                      +This[NN, EE[+XX] <: EdgeLikeIn[XX]] <: GraphLikeLike[NN, EE, This] with AnySet[Param[NN, EE]] with Graph[NN, EE]]
+  extends AnySet[Param[N, E]]
+    with SetOps[Param[N, E], AnySet, This[N, E]] {
+
+}
+*/
 
 /** A template trait for graphs.
   *
@@ -28,8 +46,7 @@ import config.GraphConfig
 trait GraphLike[N,
                 E[+X] <: EdgeLikeIn[X],
                 +This[NN, EE[+XX] <: EdgeLikeIn[XX]] <: GraphLike[NN, EE, This] with AnySet[Param[NN, EE]] with Graph[NN, EE]]
-    extends AnySet[Param[N, E]]
-    with SetOps[Param[N, E], AnySet, This[N, E]]
+    extends GraphLikeParent[N, E, This]
     with GraphTraversal[N, E]
     with GraphBase[N, E]
     with GraphDegree[N, E] {
@@ -341,7 +358,7 @@ trait GraphLike[N,
   final protected def partition(elems: IterableOnce[Param[N, E]]) =
     new Param.Partitions[N, E](elems match {
       case t: Iterable[Param[N, E]]     => t
-      case g: IterableOnce[Param[N, E]] => g.iterator.to(Iterable)
+      case g: IterableOnce[Param[N, E]] => g.toIterable //BW was: g.iterator.to(Iterable)
       case _                            => throw new MatchError("Iterable expected.")
     })
 

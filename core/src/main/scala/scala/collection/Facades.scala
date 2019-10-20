@@ -61,6 +61,7 @@ trait FilterableSet[A] {
 
 /** A `Set` implementation extended by `FilterableSet`.
   */
+// BW split
 final class FilteredSet[A](val set: Set[A], val p: (A) => Boolean) extends immutable.Set[A] with FilterableSet[A] {
   def contains(elem: A)     = p(elem) && (set contains elem)
   def iterator: Iterator[A] = set.iterator withFilter p

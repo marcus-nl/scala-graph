@@ -4,7 +4,8 @@ import language.higherKinds
 
 import scala.annotation.{switch, tailrec}
 import scala.collection.{Seq, AbstractIterable, EqSetFacade, IndexedSeq}
-import scala.collection.mutable.{ArrayBuffer, Buffer, Stack, Map => MMap}
+import scala.collection.mutable.{ArrayBuffer, Buffer, ArrayStack => Stack, Map => MMap}
+import scala.collection.compat._
 import GraphPredef.{EdgeLikeIn, OuterEdge, OuterElem}
 import mutable.{EqHashMap, EqHashSet}
 

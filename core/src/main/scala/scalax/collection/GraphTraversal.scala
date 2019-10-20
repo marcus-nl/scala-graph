@@ -3,6 +3,7 @@ package scalax.collection
 import scala.annotation.tailrec
 import scala.collection.{AbstractIterable, AbstractIterator, EqSetFacade, IndexedSeq}
 import scala.collection.mutable.{ArrayBuffer, Builder}
+import scala.collection.compat._
 import scala.language.{higherKinds, implicitConversions}
 import scala.math.{max, min}
 
@@ -449,7 +450,7 @@ trait GraphTraversal[N, E[+X] <: EdgeLikeIn[X]] extends GraphBase[N, E] {
       */
     final def sameElements(that: Iterable[_]): Boolean =
       this.size == that.size && {
-        val thisList = to(List)
+        val thisList = this.to(List)
         // thisList.indexOf(that.head) may fail due to asymmetric equality
         val idx = thisList.indexWhere(_ == that.head)
         if (idx >= 0) {

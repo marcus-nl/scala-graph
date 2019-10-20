@@ -6,6 +6,7 @@ import scala.collection.mutable.{ArrayBuffer, ReusableBuilder}
 import scala.collection.{SortedIterableFactory, SortedSetFactoryDefaults}
 import scala.compat.Platform.arraycopy
 
+// BW split
 @SerialVersionUID(1L)
 class SortedArraySet[A](array: Array[A] = new Array[AnyRef](0).asInstanceOf[Array[A]])(
     implicit val ordering: Ordering[A])
