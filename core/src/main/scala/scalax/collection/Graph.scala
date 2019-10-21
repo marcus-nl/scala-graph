@@ -9,23 +9,6 @@ import GraphEdge.{DiHyperEdgeLike, Keyed, UnDiEdge}
 import generic.{GraphCompanion, GraphCoreCompanion}
 import config.GraphConfig
 
-/* 2.12 */
-trait GraphLikeParent[N,
-                   E[+X] <: EdgeLikeIn[X],
-                   +This[NN, EE[+XX] <: EdgeLikeIn[XX]] <: GraphLikeParent[NN, EE, This] with AnySet[Param[NN, EE]] with Graph[NN, EE]]
-  extends scala.collection.SetLike[Param[N, E], This[N, E]] {
-
-}
-
-/* 2.13
-trait GraphLikeParent[N,
-                      E[+X] <: EdgeLikeIn[X],
-                      +This[NN, EE[+XX] <: EdgeLikeIn[XX]] <: GraphLikeLike[NN, EE, This] with AnySet[Param[NN, EE]] with Graph[NN, EE]]
-  extends AnySet[Param[N, E]]
-    with SetOps[Param[N, E], AnySet, This[N, E]] {
-
-}
-*/
 
 /** A template trait for graphs.
   *
@@ -46,7 +29,7 @@ trait GraphLikeParent[N,
 trait GraphLike[N,
                 E[+X] <: EdgeLikeIn[X],
                 +This[NN, EE[+XX] <: EdgeLikeIn[XX]] <: GraphLike[NN, EE, This] with AnySet[Param[NN, EE]] with Graph[NN, EE]]
-    extends GraphLikeParent[N, E, This]
+    extends GraphLikeBase[N, E, This]
     with GraphTraversal[N, E]
     with GraphBase[N, E]
     with GraphDegree[N, E] {
@@ -67,14 +50,8 @@ trait GraphLike[N,
   def isMulti: Boolean         = isMultiT || edges.hasAnyMultiEdge
   final protected val isMultiT = classOf[Keyed].isAssignableFrom(edgeT.runtimeClass)
 
-  /** The companion object of `This`. */
-  val graphCompanion: GraphCompanion[This]
   protected type Config <: GraphConfig
   implicit def config: graphCompanion.Config with Config
-
-  override def empty = graphCompanion.empty[N, E]
-  override protected def fromSpecific(coll: IterableOnce[Param[N, E]]): This[N, E] = graphCompanion.from(coll)
-  override protected def newSpecificBuilder = graphCompanion.newBuilder
 
   override def stringPrefix: String = "Graph"
 
