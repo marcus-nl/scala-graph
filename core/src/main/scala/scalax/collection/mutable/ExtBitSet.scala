@@ -18,7 +18,7 @@ final protected[collection] class ExtBitSet(words: Array[Long]) extends BitSet(w
   }
   override def clone(): ExtBitSet = new ExtBitSet(cloneWords)
 
-  override def className = getClass.getSimpleName
+  override def stringPrefix = getClass.getSimpleName
 
   /** All bits of all words. */
   override def toString =

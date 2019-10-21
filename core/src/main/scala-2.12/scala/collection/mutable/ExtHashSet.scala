@@ -37,7 +37,7 @@ class ExtHashSet[A]
     search(drawn, 1, (i: Int) => i < len) getOrElse (search(drawn - 1, -1, (i: Int) => i > 0).get)
   }
 
-  def findElem(elem: A): Option[A] = findEntry(elem)
+  override def findElem(elem: A): Option[A] = findEntry(elem)
 
   def findElem[B](other: B, correspond: (A, B) => Boolean): A = {
     var entry: AnyRef = null
