@@ -5,6 +5,7 @@ import scala.collection.{FilterableSet, FilteredSet}
 import scala.collection.mutable.{ArrayBuffer, Buffer, PriorityQueue, Queue, ArrayStack => Stack, Map => MMap}
 import scala.language.higherKinds
 import scalax.collection.GraphPredef.EdgeLikeIn
+import scalax.collection.Compat._
 import immutable.SortedArraySet
 import mutable.{ArraySet, EqHashMap, EqHashSet}
 

@@ -40,14 +40,4 @@ package object collection {
     def pipe[B](f: A => B): B = f(self)
   }
 
-  /* 2.12 */
-  implicit final class ToExts[A](val self: Iterable[A]) extends AnyVal {
-    def toMSet: MSet[A] = self.to[MSet]
-  }
-
-  /* 2.13
-  implicit final class ToExts[A](val self: Iterable[A]) extends AnyVal {
-    def toMSet: MSet[A] = self.to(MSet)
-  }
-  */
 }
