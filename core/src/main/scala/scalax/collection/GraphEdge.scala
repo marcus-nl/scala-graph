@@ -226,7 +226,7 @@ object GraphEdge {
       *  b) `p1` holds for a source and `p2` for a target of this directed edge. */
     def matches(p1: N => Boolean, p2: N => Boolean): Boolean
 
-    def canEqual(that: Any): Boolean = that.isInstanceOf[EdgeLike[_]]
+    override def canEqual(that: Any): Boolean = that.isInstanceOf[EdgeLike[_]]
 
     override def equals(other: Any): Boolean = other match {
       case that: EdgeLike[_] =>

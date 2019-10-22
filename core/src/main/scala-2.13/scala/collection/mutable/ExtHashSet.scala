@@ -30,7 +30,6 @@ import scala.util.Random
   * @define mayNotTerminateInf
   * @define willNotTerminateInf
   */
-// BW split
 final class ExtHashSet[A](initialCapacity: Int, loadFactor: Double)
   extends AbstractSet[A]
     with SetOps[A, ExtHashSet, ExtHashSet[A]]

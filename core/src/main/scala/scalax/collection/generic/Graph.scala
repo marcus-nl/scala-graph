@@ -2,7 +2,6 @@ package scalax.collection
 package generic
 
 import language.higherKinds
-import collection.generic.CanBuildFrom
 import collection.mutable.Builder
 import scala.reflect.ClassTag
 
@@ -31,15 +30,10 @@ import mutable.GraphBuilder
   *         This parameter is meant be used as an alternative or in addition to `edgeStreams`.
   * @author Peter Empen
   */
-trait GraphCompanion[+CC[N, E[+X] <: EdgeLikeIn[X]] <: Graph[N, E] with GraphLike[N, E, CC]] {
-
-  /** Type of configuration required for a specific `Graph` companion. */
-  type Config <: GraphConfig
+trait GraphCompanion[+CC[N, E[+X] <: EdgeLikeIn[X]] <: Graph[N, E] with GraphLike[N, E, CC]] extends GraphCompanionBase[CC] {
 
   /** The default configuration to be used in absence of a user-supplied configuration. */
   def defaultConfig: Config
-
-  protected[this] type Coll = CC[_, Nothing]
 
   /** Creates an empty `Graph` instance. */
   def empty[N, E[+X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]], config: Config): CC[N, E]
@@ -98,14 +92,6 @@ trait GraphCompanion[+CC[N, E[+X] <: EdgeLikeIn[X]] <: Graph[N, E] with GraphLik
   def newBuilder[N, E[+X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]],
                                            config: Config): Builder[Param[N, E], CC[N, E]] =
     new GraphBuilder[N, E, CC](this)
-  /* TODO build from... still needed?
-  class GraphCanBuildFrom[N, E[+X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]], config: Config)
-      extends CanBuildFrom[Coll, Param[N, E], CC[N, E]] {
-    def apply(from: Coll) = newBuilder[N, E]
-    def apply()           = newBuilder[N, E]
-    override def fromSpecific(from: Coll)(it: IterableOnce[Param[N, E]]) = ???
-    override def newBuilder(from: Coll) = ???
-  } */
 }
 
 /** `GraphCompanion` extended to work with `CoreConfig`. */

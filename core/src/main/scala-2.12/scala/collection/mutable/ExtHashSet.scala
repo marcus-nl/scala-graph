@@ -88,4 +88,11 @@ class ExtHashSet[A]
 object ExtHashSet extends MutableSetFactory[ExtHashSet] {
   override def empty[A]      = new ExtHashSet[A]
   override def newBuilder[A] = new GrowingBuilder[A, ExtHashSet[A]](empty[A])
+
+  def fill[A](n: Int)(elem: => A): ExtHashSet[A] = {
+    val b = newBuilder[A]
+    for (i <- 0 to n)
+      b += elem
+    b.result()
+  }
 }

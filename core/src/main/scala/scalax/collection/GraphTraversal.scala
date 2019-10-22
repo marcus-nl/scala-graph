@@ -3,7 +3,6 @@ package scalax.collection
 import scala.annotation.tailrec
 import scala.collection.{AbstractIterable, AbstractIterator, EqSetFacade, IndexedSeq}
 import scala.collection.mutable.{ArrayBuffer, Builder}
-import scala.collection.compat._
 import scala.language.{higherKinds, implicitConversions}
 import scala.math.{max, min}
 
@@ -338,7 +337,7 @@ trait GraphTraversal[N, E[+X] <: EdgeLikeIn[X]] extends GraphBase[N, E] {
     * @define ADDEDGE Tries to add `edge` to the tail of the path/walk.
     * @define ADDSUCCESS Whether the addition was successful.
     */
-  trait WalkBuilder extends Builder[InnerElem, Walk] {
+  trait WalkBuilder extends Builder[InnerElem, Walk] with Compat.Growable[InnerElem] {
 
     /** The node this walk starts at. */
     def start: NodeT
@@ -450,12 +449,12 @@ trait GraphTraversal[N, E[+X] <: EdgeLikeIn[X]] extends GraphBase[N, E] {
       */
     final def sameElements(that: Iterable[_]): Boolean =
       this.size == that.size && {
-        val thisList = this.to(List)
+        val thisList = this.toList
         // thisList.indexOf(that.head) may fail due to asymmetric equality
         val idx = thisList.indexWhere(_ == that.head)
         if (idx >= 0) {
           val thisDoubled = thisList ++ thisList.tail
-          val thatList    = that.to(List)
+          val thatList    = that.toList
           (thisDoubled startsWith (thatList, idx)) ||
           (thisDoubled startsWith (thatList.reverse, idx))
         } else false

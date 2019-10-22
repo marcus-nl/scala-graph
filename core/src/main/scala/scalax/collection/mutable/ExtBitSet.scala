@@ -6,7 +6,7 @@ import scala.collection.mutable.BitSet
 import State.Handle
 import ExtBitSet._
 
-final protected[collection] class ExtBitSet(words: Array[Long]) extends BitSet(words) {
+final protected[collection] class ExtBitSet(words: Array[Long]) extends BitSet(words) with Compat.ExtBitSet {
   def this(initWords: Int = incrWords) = this(new Array[Long](initWords))
   def nrWords: Int = nwords
 
@@ -91,7 +91,7 @@ final protected[collection] class ExtBitSet(words: Array[Long]) extends BitSet(w
     elems = newElems
   }
 
-  override protected[this] def writeReplace() = this
+  override protected def writeReplace() = this
 }
 object ExtBitSet {
   val incrWords = 8

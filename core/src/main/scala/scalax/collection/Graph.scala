@@ -1,14 +1,13 @@
 package scalax.collection
 
-import language.higherKinds
-//import collection.{IterableOnce, SetOps}
+import scala.language.higherKinds
+import scala.collection.generic.CanBuildFrom
 import scala.reflect.ClassTag
 
 import GraphPredef.{EdgeLikeIn, InnerEdgeParam, InnerNodeParam, OuterEdge, OuterNode, Param}
-import GraphEdge.{DiHyperEdgeLike, Keyed, UnDiEdge}
-import generic.{GraphCompanion, GraphCoreCompanion}
+import GraphEdge.{DiEdge, DiHyperEdgeLike, Keyed, UnDiEdge}
+import generic.GraphCoreCompanion
 import config.GraphConfig
-
 
 /** A template trait for graphs.
   *
@@ -321,9 +320,6 @@ trait GraphLike[N,
     case n: InnerNodeParam[N] => this + n.value
     case e: InnerEdgeParam[N, E, _, E] => this +# e.asEdgeT[N, E, ThisGraph](thisGraph).toOuter
   }
-  override def concat(elems: IterableOnce[Param[N, E]]): This[N, E] = bulkOp(elems, isPlusPlus = true)
-  override def diff(that: AnySet[Param[N, E]]): This[N, E] = this -- that // TODO is this correct?
-  override def --(elems: IterableOnce[Param[N, E]]): This[N, E] = bulkOp(elems, isPlusPlus = false)
 
   /** Prepares and calls `plusPlus` or `minusMinus`. */
   final protected def bulkOp(elems: IterableOnce[Param[N, E]], isPlusPlus: Boolean): This[N, E] = {
@@ -335,7 +331,7 @@ trait GraphLike[N,
   final protected def partition(elems: IterableOnce[Param[N, E]]) =
     new Param.Partitions[N, E](elems match {
       case t: Iterable[Param[N, E]]     => t
-      case g: IterableOnce[Param[N, E]] => g.toIterable //BW was: g.iterator.to(Iterable)
+      case g: IterableOnce[Param[N, E]] => g.toIterable
       case _                            => throw new MatchError("Iterable expected.")
     })
 
@@ -488,10 +484,6 @@ trait GraphLike[N,
       }
     nodePred orElse edgePred
   }
-
-  def map[NN, EE[+X] <: EdgeLikeIn[X]](f: Param[N, E] => Param[NN, EE])(implicit edgeT: ClassTag[EE[NN]]): This[NN, EE] = {
-    graphCompanion.from(view.map(f))(edgeT, config)
-  }
 }
 
 // ----------------------------------------------------------------------------
@@ -521,15 +513,12 @@ object Graph extends GraphCoreCompanion[Graph] {
       implicit edgeT: ClassTag[E[N]],
       config: Config = defaultConfig): Graph[N, E] =
     immutable.Graph.from[N, E](nodes, edges)(edgeT, config)
-  /*
-  // TODO build from... still needed?
-  implicit def cbfUnDi[N, E[X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]], config: Config = defaultConfig) =
+
+  implicit def cbfUnDi[N, E[+X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]], config: Config = defaultConfig) =
     new GraphCanBuildFrom[N, E]()(edgeT, config)
       .asInstanceOf[GraphCanBuildFrom[N, E] with CanBuildFrom[Graph[_, UnDiEdge], Param[N, E], Graph[N, E]]]
 
-  implicit def cbfDi[N, E[X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]], config: Config = defaultConfig) =
+  implicit def cbfDi[N, E[+X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]], config: Config = defaultConfig) =
     new GraphCanBuildFrom[N, E]()(edgeT, config)
       .asInstanceOf[GraphCanBuildFrom[N, E] with CanBuildFrom[Graph[_, DiEdge], Param[N, E], Graph[N, E]]]
-  */
 }
-
