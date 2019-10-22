@@ -692,7 +692,7 @@ trait GraphBase[N, E[+X] <: EdgeLikeIn[X]] extends Serializable { selfGraph =>
     * @return Set of all contained edges.
     */
   def edges: EdgeSetT
-  def totalWeight = (0d /: edges)(_ + _.weight)
+  def totalWeight = edges.foldLeft(0d)(_ + _.weight)
 }
 
 object GraphBase {

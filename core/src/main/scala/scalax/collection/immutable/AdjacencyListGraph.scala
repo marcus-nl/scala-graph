@@ -5,7 +5,6 @@ import language.higherKinds
 import GraphPredef.EdgeLikeIn
 import GraphEdge.OrderedEndpoints
 import mutable.ArraySet
-import scalax.collection.Compat.InclExcl
 
 /** Implements an incident list based immutable graph representation.
   *

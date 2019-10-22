@@ -107,8 +107,6 @@ trait GraphLike[N, E[+X] <: EdgeLikeIn[X], +This[X, Y[+X] <: EdgeLikeIn[X]] <: G
     override def clear(): Unit = this.toList.foreach(elem => this -= elem)
   }
 
-  def addAll(xs: TraversableOnce[Param[N, E]]): this.type = { xs foreach +=; this }
-
   /** Adds a node to this graph.
     *
     *  @param node the node to be added
@@ -143,7 +141,7 @@ trait GraphLike[N, E[+X] <: EdgeLikeIn[X], +This[X, Y[+X] <: EdgeLikeIn[X]] <: G
       case e: InnerEdgeParam[N, E, _, E] => this +=# e.asEdgeTProjection[N, E].toOuter
     }
 
-  def knownSize = nodes.size + edges.size
+  override def knownSize = nodes.size + edges.size
 
   /** If an inner edge equaling to `edge` is present in this graph, it is replaced
     * by `edge`, otherwise `edge` will be inserted. Such an update may be useful

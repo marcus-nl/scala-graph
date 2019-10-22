@@ -8,6 +8,6 @@ object Compat {
   trait ExtBitSet
 
   trait Growable[-A]
-  trait AddSubtract[A, This]
-  trait InclExcl[A, This]
+  trait AddSubtract[A, +This]
+  trait InclExcl[A, +This]
 }

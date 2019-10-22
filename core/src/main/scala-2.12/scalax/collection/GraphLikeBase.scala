@@ -14,4 +14,6 @@ trait GraphLikeBase[N,
 
   /** The companion object of `This`. */
   val graphCompanion: GraphCompanion[This]
+
+  def knownSize: Int = -1
 }

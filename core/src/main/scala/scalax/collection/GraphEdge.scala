@@ -363,6 +363,7 @@ object GraphEdge {
   protected[collection] trait OrderedEndpoints
 
   sealed protected[collection] trait Eq {
+    def canEqual(that: Any): Boolean
     protected def baseEquals(other: EdgeLike[_]): Boolean
     protected def baseHashCode: Int
   }

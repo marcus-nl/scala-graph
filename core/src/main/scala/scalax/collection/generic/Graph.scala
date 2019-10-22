@@ -6,7 +6,7 @@ import collection.mutable.Builder
 import scala.reflect.ClassTag
 
 import GraphPredef.{EdgeLikeIn, Param}
-import config.{CoreConfig, GraphConfig}
+import config.CoreConfig
 import mutable.GraphBuilder
 
 /** Methods common to `Graph` companion objects in the core module.
