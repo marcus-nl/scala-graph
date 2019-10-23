@@ -11,6 +11,7 @@ import scalax.collection.GraphPredef.{EdgeLikeIn, Param}
 import scalax.collection.config.GraphConfig
 import scalax.collection.{Graph, GraphLike}
 
+private[collection]
 trait GraphCompanionBase[+CC[N, E[+X] <: EdgeLikeIn[X]] <: Graph[N, E] with GraphLike[N, E, CC]] {
 
   /** Type of configuration required for a specific `Graph` companion. */

@@ -6,6 +6,7 @@ import scalax.collection.Compat.InclExcl
 import scalax.collection.GraphPredef.{EdgeLikeIn, Param}
 import scalax.collection.generic.GraphCompanion
 
+private[collection]
 trait GraphLikeBase[N,
                     E[+X] <: EdgeLikeIn[X],
                     +This[NN, EE[+XX] <: EdgeLikeIn[XX]] <: GraphLike[NN, EE, This] with AnySet[Param[NN, EE]] with Graph[NN, EE]]

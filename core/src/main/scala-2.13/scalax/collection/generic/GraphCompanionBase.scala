@@ -10,6 +10,7 @@ import scalax.collection.{Graph, GraphLike}
 
 import scala.collection.BuildFrom
 
+private[collection]
 trait GraphCompanionBase[+CC[N, E[+X] <: EdgeLikeIn[X]] <: Graph[N, E] with GraphLike[N, E, CC]] {
 
   /** Type of configuration required for a specific `Graph` companion. */
@@ -23,7 +24,7 @@ trait GraphCompanionBase[+CC[N, E[+X] <: EdgeLikeIn[X]] <: Graph[N, E] with Grap
   class GraphCanBuildFrom[N, E[+X] <: EdgeLikeIn[X]](implicit edgeT: ClassTag[E[N]], config: Config)
     extends BuildFrom[Coll @uncheckedVariance, Param[N, E], CC[N, E]] {
 
-    def fromSpecific(from: Coll @uncheckedVariance)(it: IterableOnce[Param[N, E]]) = ???
-    def newBuilder(from: Coll @uncheckedVariance) = ???
+    def fromSpecific(from: Coll @uncheckedVariance)(it: IterableOnce[Param[N, E]]) = newBuilder(from).addAll(it).result()
+    def newBuilder(from: Coll @uncheckedVariance) = GraphCompanionBase.this.newBuilder(edgeT, config)
   }
 }
