@@ -396,7 +396,7 @@ object GraphEdge {
       val thatOrdered = right.isInstanceOf[OrderedEndpoints]
       thisOrdered == thatOrdered && (
         if (thisOrdered) leftEnds.toSeq sameElements rightEnds.toSeq
-        else Eq.nrEqualingNodes(leftEnds.iterator, rightEnds) == arity
+        else Eq.nrEqualingNodes(leftEnds.toIterator, rightEnds.toIterable) == arity
       )
     }
   }

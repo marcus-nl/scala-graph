@@ -25,8 +25,6 @@ package object collection {
   protected[scalax] type MSet[A] = scala.collection.mutable.Set[A]
   @inline final protected[scalax] def MSet = scala.collection.mutable.Set
 
-  // 2.12 only
-  protected[scalax] type Traversable[A] = scala.collection.Iterable[A]
   protected[scalax] type IterableOnce[A] = scala.collection.TraversableOnce[A]
 
   @inline final protected[scalax] def mkIterable[A](it: => Iterator[A]): Iterable[A] = new AbstractIterable[A] {

@@ -5,7 +5,6 @@ import language.higherKinds
 import scala.annotation.{switch, tailrec}
 import scala.collection.{Seq, AbstractIterable, EqSetFacade, IndexedSeq}
 import scala.collection.mutable.{ArrayBuffer, Buffer, ArrayStack => Stack, Map => MMap}
-import scala.collection.compat._
 import GraphPredef.{EdgeLikeIn, OuterEdge, OuterElem}
 import mutable.{EqHashMap, EqHashSet}
 
@@ -111,7 +110,7 @@ trait GraphTraversalImpl[N, E[+X] <: EdgeLikeIn[X]]
 
     final protected def resultEdges = lastEdge.fold[IndexedSeq[EdgeT]](
       ifEmpty = edges
-    )(_ => edges.view(0, edges.size - 1).to(IndexedSeq))
+    )(_ => edges.view(0, edges.size - 1).toIndexedSeq)
 
     def result: Walk = new Walk {
       val nodes     = self.nodes
