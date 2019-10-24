@@ -43,8 +43,6 @@ trait AdjacencyListGraph[
     }
 
     protected[collection] def +=(edge: EdgeT): this.type = { add(edge); this }
-
-    def diff(that: AnySet[NodeT]): AnySet[NodeT] = ???
   }
   override def nodes: NodeSetT
 
@@ -71,8 +69,6 @@ trait AdjacencyListGraph[
 
     @inline final override lazy val maxArity        = super.maxArity
     @inline final override lazy val hasAnyMultiEdge = super.hasAnyMultiEdge
-
-    def diff(that: AnySet[EdgeBase]) = ???
   }
   override def edges: EdgeSetT
 
