@@ -130,8 +130,6 @@ trait AdjacencyListGraph[
     final def upsert(edge: EdgeT): Boolean    = if (nodes upsert edge) statistics(edge, plus = true) else false
     override def remove(edge: EdgeT): Boolean = if (nodes remove edge) statistics(edge, plus = false) else false
 
-    //final def diff(that: AnySet[EdgeT]): EdgeSetT = ??? // (this -- that).asInstanceOf[EdgeSetT]
-
     def removeWithNodes(edge: EdgeT): Boolean =
       if (remove(edge)) {
         nodes --= edge.privateNodes

@@ -37,5 +37,4 @@ package object collection {
     def tap[U](f: A => U): A  = { f(self); self }
     def pipe[B](f: A => B): B = f(self)
   }
-
 }
