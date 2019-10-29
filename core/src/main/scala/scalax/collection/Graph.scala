@@ -499,7 +499,6 @@ trait GraphLike[N,
 trait Graph[N, E[+X] <: EdgeLikeIn[X]] extends AnySet[Param[N, E]] with GraphLike[N, E, Graph] {
   override def empty: Graph[N, E] = Graph.empty[N, E]
   override def knownSize: Int = nodes.size + edges.size
-  override def knownSize = nodes.size + edges.size
 }
 
 /** The main companion object for immutable graphs.

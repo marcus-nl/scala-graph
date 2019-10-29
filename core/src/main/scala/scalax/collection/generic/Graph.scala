@@ -1,12 +1,12 @@
 package scalax.collection
 package generic
 
-import collection.mutable.Builder
+import scala.collection.mutable.Builder
 import scala.annotation.unchecked.uncheckedVariance
 import scala.reflect.ClassTag
 
 import GraphPredef.{EdgeLikeIn, Param}
-import config.CoreConfig
+import config.{CoreConfig, GraphConfig}
 import mutable.GraphBuilder
 
 /** Methods common to `Graph` companion objects in the core module.
