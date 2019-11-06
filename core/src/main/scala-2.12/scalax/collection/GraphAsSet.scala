@@ -1,7 +1,5 @@
 package scalax.collection
 
-import scala.language.higherKinds
-
 import scalax.collection.Compat.InclExcl
 import scalax.collection.GraphPredef.{EdgeLikeIn, Param}
 import scalax.collection.generic.GraphCompanion
@@ -16,6 +14,5 @@ private[collection] trait GraphAsSet[N,
   /** The companion object of `This`. */
   val graphCompanion: GraphCompanion[This]
 
-  /** Needs to be defined here so it can be overridden in trait scalax.collection.Graph */
-  def knownSize: Int = -1
+  def knownSize: Int
 }

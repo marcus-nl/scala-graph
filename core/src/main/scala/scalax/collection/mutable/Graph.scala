@@ -3,7 +3,6 @@ package mutable
 
 import java.io.{ObjectInputStream, ObjectOutputStream}
 
-import scala.language.higherKinds
 import scala.collection.generic.{CanBuildFrom, Growable, Shrinkable}
 import scala.collection.mutable.{ArrayBuffer, Builder, Cloneable, Set => MutableSet}
 import scala.reflect.ClassTag
@@ -14,13 +13,13 @@ import generic.{GraphCompanion, MutableGraphCompanion}
 import config._
 import GraphEdge.UnDiEdge
 
-// TODO addAll was previously overridden ("for increased performance"). is that still useful?
 abstract protected[collection] class BuilderImpl[
     N,
     E[+X] <: EdgeLikeIn[X],
     CC[N, E[+X] <: EdgeLikeIn[X]] <: CommonGraph[N, E] with CommonGraphLike[N, E, CC]](implicit edgeT: ClassTag[E[N]],
-                                                                                      config: GraphConfig)
-    extends Builder[Param[N, E], CC[N, E]] with Compat.Growable[Param[N, E]] {
+                                                                                       config: GraphConfig)
+    extends Builder[Param[N, E], CC[N, E]]
+    with Compat.Growable[Param[N, E]] {
 
   protected type This = CC[N, E]
   protected val nodes = new ArrayBuffer[N](config.orderHint)
@@ -63,7 +62,6 @@ class GraphBuilder[N,
   *
   * @author Peter Empen
   */
-// TODO addAll was previously overridden ("for increased performance"). is that still useful?
 trait GraphLike[N, E[+X] <: EdgeLikeIn[X], +This[X, Y[+X] <: EdgeLikeIn[X]] <: GraphLike[X, Y, This] with Graph[X, Y]]
     extends CommonGraphLike[N, E, This]
     with Growable[Param[N, E]]
@@ -93,12 +91,12 @@ trait GraphLike[N, E[+X] <: EdgeLikeIn[X], +This[X, Y[+X] <: EdgeLikeIn[X]] <: G
     protected def minusEdges(node: NodeT): Unit
 
     override def diff(that: AnySet[NodeT]) = this -- that
-    override def clear(): Unit = this.toList.foreach(elem => this -= elem)
+    override def clear(): Unit             = this.toList.foreach(elem => this -= elem)
   }
 
   type EdgeSetT <: EdgeSet
   trait EdgeSet extends MutableSet[EdgeT] with super.EdgeSet with Compat.AddSubtract[EdgeT, EdgeSet] {
-    @inline final def addOne(edge: EdgeT) = { add(edge); this }
+    @inline final def addOne(edge: EdgeT)      = { add(edge); this }
     @inline final def subtractOne(edge: EdgeT) = { remove(edge); this }
 
     /** Same as `upsert` at graph level. */
@@ -106,7 +104,7 @@ trait GraphLike[N, E[+X] <: EdgeLikeIn[X], +This[X, Y[+X] <: EdgeLikeIn[X]] <: G
     def removeWithNodes(edge: EdgeT): Boolean
 
     override def diff(that: AnySet[EdgeT]) = this -- that
-    override def clear(): Unit = this.toList.foreach(elem => this -= elem)
+    override def clear(): Unit             = this.toList.foreach(elem => this -= elem)
   }
 
   /** Adds a node to this graph.
