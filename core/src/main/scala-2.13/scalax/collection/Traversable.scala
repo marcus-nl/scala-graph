@@ -16,6 +16,7 @@ import scala.annotation.unchecked.{uncheckedVariance => uV}
 import scala.collection.mutable.Builder
 import scala.collection.{Factory, IterableFactory, IterableOnce}
 
+/*
 /** Substitute for Scala 2.12 `Traversable` to continue support for collections that cannot implement `hasNext`/`next` easily.
   * The methods of Scala 2.13's `IterableOnce` are implemented in terms of `foreach`.
   *
@@ -354,5 +355,8 @@ trait Traversable[+A] {
   }
 }
 
+
+trait Traversable[+A] extends TraversingIterator[A]
+*/
 /** Explicit instantiation of the trait to reduce class file size in subclasses. */
-abstract class AbstractTraversable[+A] extends Traversable[A]
+abstract class AbstractTraversable[+A] extends TraversingIterable[A]

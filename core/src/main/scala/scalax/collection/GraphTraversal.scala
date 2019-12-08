@@ -624,7 +624,7 @@ trait GraphTraversal[N, E[+X] <: EdgeLikeIn[X]] extends GraphBase[N, E] {
     def apply[A](t: Iterable[A], nodeFilter: NodeFilter, edgeFilter: EdgeFilter) =
       new AbstractTraversable[A] with SubgraphProperties {
         final protected def sizeHint: Int = 64
-        def foreach[U](f: A => U): Unit   = t foreach f
+        override def foreach[U](f: A => U): Unit   = t foreach f
         def subgraphNodes                 = nodeFilter
         def subgraphEdges                 = edgeFilter
       }
@@ -1030,10 +1030,10 @@ trait GraphTraversal[N, E[+X] <: EdgeLikeIn[X]] extends GraphBase[N, E] {
   trait Traverser[A, +This <: Traverser[A, This]]
       extends TraverserMethods[A, This]
       with Properties
-      with Traversable[A] {
+      with TraversingIterable[A] {
     this: This =>
 
-    def foreach[U](f: A => U): Unit =
+    override def foreach[U](f: A => U): Unit =
       if (subgraphNodes(root))
         apply(noNode, f)
 
