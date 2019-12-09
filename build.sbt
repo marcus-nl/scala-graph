@@ -22,6 +22,7 @@ lazy val core = project
         "org.scalacheck" %% "scalacheck"   % "1.14.0" % "optional;provided",
         "org.gephi"      % "gephi-toolkit" % "0.9.2"  % "test" classifier "all"
       ),
+      /*
       dependencyOverrides ++= {
         val release                        = "RELEASE90"
         def netbeansModule(module: String) = "org.netbeans.modules" % module % release
@@ -38,6 +39,7 @@ lazy val core = project
           netbeansApi("org-netbeans-api-annotations-common")
         )
       }
+      */
     )
   )
 
