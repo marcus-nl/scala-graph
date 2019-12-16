@@ -6,17 +6,26 @@ import scala.collection.mutable
 trait TraversingIterable[+A] extends Iterable[A] {
 //or perhaps: trait TraversingOps[A] { this: Iterable[A] =>
 
-  type Builder = mutable.Builder[A @uV, Iterable[A] @uV]
+  private type CC[X] = Iterable[X]
+  private type Builder[X] = mutable.Builder[X @uV, Iterable[X] @uV]
 
   // to be overridden in subclasses
   override def foreach[U](f: A => U): Unit
 
   def iterator = {
-    // hmmm...
-    withBuilder { b =>
-      for (x <- this) b += x
-    }.iterator
+    withBuilder[A](b => for (x <- this) b += x).iterator
   }
+
+  // Map Operations
+
+  override def map[B](f: A => B): Iterable[B] =
+    withBuilder[B](b => for (x <- this) b += f(x))
+
+  override def flatMap[B](f: A => IterableOnce[B]): Iterable[B] =
+    withBuilder[B](b => for (x <- this) b ++= f(x))
+
+  override def collect[B](pf: PartialFunction[A, B]): Iterable[B] =
+    withBuilder[B](b => foreach(pf.runWith(b += _)))
 
   // Size info
 
@@ -52,7 +61,7 @@ trait TraversingIterable[+A] extends Iterable[A] {
   override def take(n: Int): Iterable[A] = slice(0, n)
 
   override def takeWhile(p: A => Boolean): Iterable[A] = {
-    def block(b: Builder): Unit = {
+    def block(b: Builder[A]): Unit = {
       for (x <- this) {
         if (!p(x)) return
         b += x
@@ -63,7 +72,7 @@ trait TraversingIterable[+A] extends Iterable[A] {
 
   override def slice(from: Int, until: Int) = {
     math.max(from, 0) pipe { from =>
-      def block(b: Builder): Unit =
+      def block(b: Builder[A]): Unit =
         if (until > from) {
           var i = 0
           for (x <- this) {
@@ -74,6 +83,14 @@ trait TraversingIterable[+A] extends Iterable[A] {
         }
       withBuilder(block)
     }
+  }
+
+  // Folds
+
+  override def foldLeft[B](z: B)(op: (B, A) => B): B = {
+    var result = z
+    for (x <- this) result = op(result, x)
+    result
   }
 
   // Element Conditions
@@ -93,8 +110,8 @@ trait TraversingIterable[+A] extends Iterable[A] {
   // Builder utilities
 
   // TODO sizeHint
-  private def withBuilder(block: Builder => Unit): Iterable[A] = {
-    val b = newSpecificBuilder
+  private def withBuilder[B](block: Builder[B] => Unit): Iterable[B] = {
+    val b = iterableFactory.newBuilder[B]
     block(b)
     b.result()
   }
