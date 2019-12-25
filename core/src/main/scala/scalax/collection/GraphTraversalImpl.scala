@@ -528,7 +528,7 @@ trait GraphTraversalImpl[N, E[+X] <: EdgeLikeIn[X]]
     final protected def newTraverser
       : (NodeT, Parameters, NodeFilter, EdgeFilter, ElemOrdering, Option[Weight]) => InnerNodeDownUpTraverser = copy
 
-    final override def foreach[U](f: ((Boolean, NodeT)) => U): Unit = downUpForeach(
+    final override protected def autarkicForeach[U](f: ((Boolean, NodeT)) => U): Unit = downUpForeach(
       fUnit(f),
       (n: NodeT) => f(false, n)
     )
@@ -557,7 +557,7 @@ trait GraphTraversalImpl[N, E[+X] <: EdgeLikeIn[X]]
     final protected def newTraverser
       : (NodeT, Parameters, NodeFilter, EdgeFilter, ElemOrdering, Option[Weight]) => OuterNodeDownUpTraverser = copy
 
-    final override def foreach[U](f: ((Boolean, N)) => U): Unit = downUpForeach(
+    final override protected def autarkicForeach[U](f: ((Boolean, N)) => U): Unit = downUpForeach(
       fUnit(f),
       (n: NodeT) => f(false, n)
     )

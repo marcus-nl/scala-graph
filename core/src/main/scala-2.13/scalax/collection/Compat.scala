@@ -1,7 +1,7 @@
 package scalax.collection
 
 object Compat {
-  type AbstractTraversable[+A] = scalax.collection.AbstractTraversable[A]
+  type CompatTraversable[+A] = scalax.collection.ForeachBasedDetachingIterable[A]
 
   implicit final class IterableEnrichments[A](val self: Iterable[A]) extends AnyVal {
     def toMSet: MSet[A] = self.to(MSet)
